@@ -35,4 +35,18 @@ defmodule Rumbl.Auth do
   def logout(conn) do
     delete_session(conn, :user_id) 
   end
+
+  import Phoenix.Controller
+  alias Rumbl.Router.Helpers
+  def authentificate_user(conn, _) do
+    if conn.assigns.current_user do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You must be logged to access that page")
+      |> redirect(to: Helpers.page_path(conn, :index))
+      |> halt()
+    end
+  end
+
 end
